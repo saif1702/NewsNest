@@ -5,9 +5,11 @@ class NewsContain extends StatelessWidget {
   String newsHead;
   String newsdescrbtion;
   String newsUrl;
+  String newsCnt;
   NewsContain({
     super.key,
     required this.imageUrl,
+    required this.newsCnt,
     required this.newsdescrbtion,
     required this.newsHead,
     required this.newsUrl,
@@ -24,24 +26,33 @@ class NewsContain extends StatelessWidget {
         children: [
           Image.network(
             imageUrl,
-            height: 400,
+            height: 380,
             width: MediaQuery.of(context).size.width,
 
             fit: BoxFit.fitWidth,
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                SizedBox(height: 22),
+                SizedBox(height: 19),
                 Text(
                   newsHead,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 12),
                 Text(
+                  newsCnt,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.brown,
+                  ),
+                ),
+                SizedBox(height: 18),
+                Text(
                   newsdescrbtion,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
