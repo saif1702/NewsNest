@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:newsnest/model/newsArt.dart';
 import 'package:newsnest/view/widget/newscontain.dart';
-
 import '../controller/newsfatch.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,8 +11,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isLoading = true;
+
+  late NewsArt newsArt;
+  GetNews() async {
+    newsArt = await NewsFatch.Newsfatch();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
   void initState() {
-    NewsFatch.Newsfatch();
+    GetNews();
     super.initState();
   }
 
@@ -20,20 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView.builder(
+        controller: PageController(initialPage: 0),
         scrollDirection: Axis.vertical,
-        itemCount: 10,
+        onPageChanged: (value) {
+          setState(() {
+            isLoading = true;
+          });
+          GetNews();
+        },
         itemBuilder: (context, index) {
-          NewsFatch.Newsfatch();
-          return NewsContain(
-            imageUrl:
-                "https://images.unsplash.com/photo-1593789198777-f29bc259780e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            newsCnt: "Hypersomnia is excessive sleepiness.",
-            newsHead: "why people just wanna sleep? ",
-            newsdescrbtion:
-                "There are many causes of excessive sleepiness, including insufficient or inadequate sleep, sleep disorders, medications and medical or psychiatric illnesses.",
-            newsUrl:
-                "https://www.betterhealth.vic.gov.au/health/conditionsandtreatments/sleep-hypersomnia",
-          );
+          return isLoading
+              ? Center(child: CircularProgressIndicator())
+              : NewsContain(
+                  imageUrl: newsArt.imgUrl,
+                  newsCnt: newsArt.newsCnt,
+                  newsHead: newsArt.newsHead,
+                  newsdescrbtion: newsArt.newsdescrbtion,
+                  newsUrl: newsArt.newsurl,
+                );
         },
       ), // helps to scroll pages horizontally
     );
