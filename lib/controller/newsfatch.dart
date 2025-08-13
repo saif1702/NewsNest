@@ -8,12 +8,7 @@ class NewsFatch {
     "business-insider-uk",
     "cbc-news",
     "cbs-news",
-    "channel-news-asia",
     "cnn",
-    "cnn-es",
-    "der-tagesspiegel",
-    "die-zeit",
-    "el-mundo",
     "engadget",
     "entertainment-weekly",
     "espn",
@@ -25,26 +20,21 @@ class NewsFatch {
     "abc-news",
     "al-jazeera-english",
     "associated-press",
-    "bild",
     "bleacher-report",
     "bloomberg",
     "breitbart-news",
     "buzzfeed",
     "business-insider",
     "fox-sports",
-    "globo",
     "google-news",
-    "google-news-in",
     "guardian-uk",
     "hacker-news",
     "ign",
     "independent",
-    "les-echos",
     "medical-news-today",
     "msnbc",
     "mtv-news",
     "national-geographic",
-    "news24",
     "new-scientist",
     "new-york-magazine",
     "next-big-future",
@@ -52,14 +42,11 @@ class NewsFatch {
     "npr",
     "politico",
     "recode",
-    "rediff",
     "reuters",
     "techcrunch",
     "techradar",
     "thedailybeast",
     "the-economist",
-    "the-globe-and-mail",
-    "the-hindu",
     "the-hill",
     "the-irish-times",
     "the-jerusalem-post",
@@ -76,10 +63,7 @@ class NewsFatch {
     "usa-today",
     "vice-news",
     "wired",
-    "ynet",
     "abc-news-au",
-    "business-insider-de",
-    "cbc-news",
     "washington-examiner",
     "yahoo-news",
     "yahoo-sports",
@@ -87,7 +71,6 @@ class NewsFatch {
     "the-huffington-post",
     "mirror-sport",
     "guardian-au",
-    "guardian-de",
     "guardian-us",
     "guardian-in",
     "guardian-za",
@@ -96,39 +79,21 @@ class NewsFatch {
     "daily-mail",
     "daily-mirror",
     "daily-telegraph-au",
-    "der-spiegel",
-    "economic-times",
-    "el-pais",
-    "espn-fc",
     "evening-standard",
-    "global-times",
     "i-news",
     "inews",
-    "india-today",
-    "kicking-world",
-    "le-monde",
     "metro",
     "news-com-au",
     "nz-herald",
     "nsw-news",
-    "the-straits-times",
-    "tokyo-np",
-    "tokyo-sports",
-    "tokyo-express",
-    "times-of-india",
     "usatoday-sports",
-    "guardian-au",
-    "guardian-kr",
-    "guardian-jp",
-    "guardian-ru",
     "the-guardian-science",
-    "guangming-daily",
   ];
 
   static Future<NewsArt> Newsfatch() async {
     try {
-      final _random = Random();
-      var sourceID = sourcesId[_random.nextInt(sourcesId.length)];
+      final random = Random();
+      var sourceID = sourcesId[random.nextInt(sourcesId.length)];
       print("Fetching from source: $sourceID");
 
       final response = await get(
@@ -141,14 +106,14 @@ class NewsFatch {
         throw Exception("HTTP ${response.statusCode}: ${response.body}");
       }
 
-      Map<String, dynamic> body_data = jsonDecode(response.body);
-      List articles = body_data["articles"] ?? [];
+      Map<String, dynamic> bodyData = jsonDecode(response.body);
+      List articles = bodyData["articles"] ?? [];
 
       if (articles.isEmpty) {
         throw Exception("No articles found");
       }
 
-      var myArticle = articles[_random.nextInt(articles.length)];
+      var myArticle = articles[random.nextInt(articles.length)];
       print("Fetched article: ${myArticle['title']}");
 
       return NewsArt.fromAPItoApp(myArticle);
