@@ -257,7 +257,7 @@ packages:
     source: hosted
     version: "4.13.0"
   webview_flutter_android:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter_android
       sha256: "414174cacd339046a1a6dbf93cac62422194c676fed11119ccf228b81640e887"
