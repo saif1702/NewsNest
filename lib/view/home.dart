@@ -1,7 +1,10 @@
+// lib/view/home.dart
 import 'package:flutter/material.dart';
 import 'package:newsnest/model/newsArt.dart';
 import 'package:newsnest/view/widget/newscontain.dart';
 import '../controller/newsfatch.dart';
+import '../notification.dart';
+import 'notification.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,19 +15,38 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
-
   late NewsArt newsArt;
-  GetNews() async {
-    newsArt = await NewsFatch.Newsfatch();
-    setState(() {
-      isLoading = false;
-    });
+
+  Future<void> getNews() async {
+    try {
+      newsArt = await NewsFatch.Newsfatch();
+
+      // Only update state if the widget is still mounted
+      if (!mounted) return;
+
+      setState(() {
+        isLoading = false;
+
+        // Safely update currentNewsId if it's not null
+        if (newsArt.newsId != null) {
+          currentNewsId = newsArt.newsId;
+        }
+      });
+    } catch (e, stacktrace) {
+      // Handle errors gracefully
+      if (!mounted) return;
+      setState(() {
+        isLoading = false;
+      });
+      print("Error fetching news: $e");
+      print(stacktrace);
+    }
   }
 
   @override
   void initState() {
-    GetNews();
     super.initState();
+    getNews();
   }
 
   @override
@@ -33,15 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView.builder(
         controller: PageController(initialPage: 0),
         scrollDirection: Axis.vertical,
-        onPageChanged: (value) {
-          setState(() {
-            isLoading = true;
-          });
-          GetNews();
+        onPageChanged: (index) async {
+          setState(() => isLoading = true);
+          await getNews();
         },
         itemBuilder: (context, index) {
           return isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : NewsContain(
                   imageUrl: newsArt.imgUrl,
                   newsCnt: newsArt.newsCnt,
@@ -50,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   newsUrl: newsArt.newsurl,
                 );
         },
-      ), // helps to scroll pages horizontally
+      ),
     );
   }
 }

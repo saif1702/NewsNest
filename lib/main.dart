@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:newsnest/view/home.dart';
+import 'package:newsnest/view/notification.dart';
+import 'package:newsnest/view/splash.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase and Notifications first
+  await NotificationService().init();
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool showingSplash = true;
+
+  void loadHome() {
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        showingSplash = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadHome();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'NewsNest',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: showingSplash
+          ? const SplashScreen()
+          : const HomeScreen(), // Shows splash first, then home
     );
   }
 }

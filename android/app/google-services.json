@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "561462254723",
+    "project_id": "newsnest-1702",
+    "storage_bucket": "newsnest-1702.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561462254723:android:e5ca4ef8fb47631e49cfb6",
+        "android_client_info": {
+          "package_name": "com.saif.newsnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD2LTiaOy-m7DV8A_xhrKUXFR67L99SM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

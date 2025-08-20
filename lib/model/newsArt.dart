@@ -13,6 +13,8 @@ class NewsArt {
     required this.newsurl,
   });
 
+  get newsId => null;
+
   static NewsArt fromAPItoApp(Map<String, dynamic> artical) {
     return NewsArt(
       imgUrl:
