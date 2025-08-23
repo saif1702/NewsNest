@@ -1,8 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:newsnest/view/notifications_screen.dart'; // ⬅ new screen
+import 'package:newsnest/model/newsArt.dart'; // ⬅ needed for NewsArt model
 
-// Track the currently visible news ID
 String? currentNewsId;
 
 // Initialize plugin
@@ -12,8 +13,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 // Background message handler
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  final newsId =
-      message.data['newsId']; // make sure your FCM payload includes newsId
+  final newsId = message.data['newsId'];
   final title = message.notification?.title ?? 'News';
   final body = message.notification?.body ?? '';
 
@@ -22,13 +22,25 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
-// Show notification helper
+// ✅ Single version of _showNotification
 Future<void> _showNotification(
   String? newsId,
   String title,
   String body,
 ) async {
-  if (newsId != null && newsId == currentNewsId) return; // skip current news
+  if (newsId != null && newsId == currentNewsId) return;
+
+  // Save news into in-memory list for NotificationsScreen
+  NotificationsScreen.savedNews.add(
+    NewsArt(
+      imgUrl:
+          "https://img.freepik.com/free-vector/realistic-news-studio-background_52683-103246.jpg",
+      newsCnt: body,
+      newsdescrbtion: body,
+      newsHead: title,
+      newsurl: "https://news.google.com/home?hl=en-US&gl=US&ceid=US:en",
+    ),
+  );
 
   const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
     'news_channel',

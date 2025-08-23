@@ -13,19 +13,17 @@ class NewsArt {
     required this.newsurl,
   });
 
-  get newsId => null;
+  String get newsId => newsurl.hashCode.toString();
 
-  static NewsArt fromAPItoApp(Map<String, dynamic> artical) {
+  static NewsArt fromAPItoApp(Map<String, dynamic> article) {
     return NewsArt(
       imgUrl:
-          artical["urlToImage"] ??
+          article["urlToImage"] ??
           "https://img.freepik.com/free-vector/realistic-news-studio-background_52683-103246.jpg",
-      newsCnt: artical["content"] ?? " :-) ",
-      newsdescrbtion: artical["description"] ?? " :-) ",
-      newsHead: artical["title"] ?? " :-) ",
-      newsurl:
-          artical["url"] ??
-          "https://news.google.com/home?hl=en-US&gl=US&ceid=US:en",
+      newsCnt: article["content"] ?? "No content",
+      newsdescrbtion: article["description"] ?? "No description",
+      newsHead: article["title"] ?? "No title",
+      newsurl: article["url"] ?? "https://news.google.com/home",
     );
   }
 }

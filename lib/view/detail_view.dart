@@ -3,6 +3,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import 'notifications_screen.dart';
+
 class DetailViewScreen extends StatefulWidget {
   final String newsUrl;
   const DetailViewScreen({super.key, required this.newsUrl});
@@ -90,14 +92,29 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.blue),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications, color: Colors.blue),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationsScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          // Small top progress bar for loading state
-          LinearProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-            backgroundColor: Colors.grey.shade300,
-            minHeight: 3,
+          SizedBox(
+            width: 600, // adjust length
+            child: LinearProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+              backgroundColor: Colors.grey.shade300,
+              minHeight: 2,
+            ),
           ),
           Expanded(
             child: ClipRRect(
