@@ -6,7 +6,7 @@ import 'package:newsnest/view/splash.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase and Notifications first
+  // Firebase and Notifications first
   await NotificationService().init();
 
   runApp(const MyApp());

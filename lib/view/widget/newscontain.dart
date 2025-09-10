@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../detail_view.dart';
 
 class NewsContain extends StatelessWidget {
-  String imageUrl;
-  String newsHead;
-  String newsdescrbtion;
-  String newsUrl;
-  String newsCnt;
+  final String imageUrl;
+  final String newsHead;
+  final String newsdescrbtion;
+  final String newsUrl;
+  final String newsCnt;
 
-  NewsContain({
+  const NewsContain({
     super.key,
     required this.imageUrl,
     required this.newsCnt,
@@ -23,7 +23,6 @@ class NewsContain extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// ---------- IMAGE ----------
           FadeInImage.assetNetwork(
             placeholder: "assets/image/placeholder.jpg",
             image: imageUrl,
@@ -31,10 +30,7 @@ class NewsContain extends StatelessWidget {
             height: 280,
             fit: BoxFit.cover,
           ),
-
           const SizedBox(height: 16),
-
-          /// ---------- CONTENT CARD ----------
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Card(
@@ -47,48 +43,38 @@ class NewsContain extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// Headline
                     Text(
                       newsHead.length > 100
                           ? "${newsHead.substring(0, 99)}..."
                           : newsHead,
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 19,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
-                    const SizedBox(height: 30),
-
-                    /// Short Content
+                    const SizedBox(height: 20),
                     Text(
                       newsCnt != "__"
                           ? newsCnt.length > 200
-                                ? "${newsCnt.substring(0, 200)}..."
-                                : newsCnt
+                          ? "${newsCnt.substring(0, 200)}..."
+                          : newsCnt
                           : newsCnt,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         color: Colors.black87,
                         height: 1.4,
                       ),
                     ),
-
-                    const SizedBox(height: 30),
-
-                    /// Description
+                    const SizedBox(height: 20),
                     Text(
                       newsdescrbtion,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w600,
                         color: Colors.deepPurple,
                       ),
                     ),
-
-                    const SizedBox(height: 28),
-
-                    /// ---------- READ MORE BUTTON ----------
+                    const SizedBox(height: 24),
                     Align(
                       alignment: Alignment.center,
                       child: ElevatedButton(
@@ -106,8 +92,12 @@ class NewsContain extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailViewScreen(newsUrl: newsUrl),
+                              builder: (context) => DetailViewScreen(
+                                newsUrl: newsUrl,
+                                newsCnt: "$newsHead\n\n$newsCnt\n\n$newsdescrbtion",
+                                newsHead: newsHead,
+                                newsdescrbtion: newsdescrbtion, newsDescription: '',
+                              ),
                             ),
                           );
                         },

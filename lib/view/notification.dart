@@ -6,7 +6,6 @@ import 'package:newsnest/model/newsArt.dart'; // ⬅ needed for NewsArt model
 
 String? currentNewsId;
 
-// Initialize plugin
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -22,7 +21,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
-// ✅ Single version of _showNotification
 Future<void> _showNotification(
   String? newsId,
   String title,
@@ -30,7 +28,6 @@ Future<void> _showNotification(
 ) async {
   if (newsId != null && newsId == currentNewsId) return;
 
-  // Save news into in-memory list for NotificationsScreen
   NotificationsScreen.savedNews.add(
     NewsArt(
       imgUrl:
@@ -67,13 +64,10 @@ class NotificationService {
   Future<void> init() async {
     await Firebase.initializeApp();
 
-    // Request permission
     await FirebaseMessaging.instance.requestPermission();
 
-    // Background handler
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-    // Initialize local notifications
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -83,7 +77,6 @@ class NotificationService {
 
     await flutterLocalNotificationsPlugin.initialize(initSettings);
 
-    // Foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       final newsId = message.data['newsId'];
       final title = message.notification?.title ?? 'News';
@@ -91,7 +84,6 @@ class NotificationService {
       _showNotification(newsId, title, body);
     });
 
-    // On notification tap
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Notification clicked: ${message.notification?.title}');
     });
